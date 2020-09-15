@@ -1,4 +1,5 @@
 # Development environmen for Mac (Ubuntu on mac)
+
 ## Required apps (必要アプリ)
 - Vagrant
 - VMware-Fusion or VirtualBox
@@ -9,6 +10,7 @@
 
 ## Exec Ansible 
 ### Case from host
+
 #### Exec all 
 ```bash
 ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu18
