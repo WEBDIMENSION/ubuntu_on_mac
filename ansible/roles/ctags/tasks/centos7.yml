@@ -1,0 +1,10 @@
+---
+# tasks file for ansible
+# For CentOS7
+- name: Install dependencies for ctags gtags
+  become: true
+  yum:
+    name: "{{ item }}"
+    #state: absent
+    #purge: yes
+  with_items: "{{ global_dependencies }}"

@@ -1,0 +1,133 @@
+---
+# defaults file for Group CentOS7
+shell_profile: '.bash_profile'
+
+#pythonh
+python_dependencies:
+  - gcc
+  - bzip2
+  - bzip2-devel
+  - readline
+  - readline-devel
+  - sqlite
+  - sqlite-devel
+  - openssl
+  - openssl-devel
+  - libffi-devel
+  - zlib-devel
+
+#rbenv
+ruby_dependencies:
+  - bzip2
+  - bzip2-devel
+  - gcc
+  - libffi-devel
+  - openssl
+  - openssl-devel
+  - readline
+  - readline-devel
+  - sqlite
+  - sqlite-devel
+  - zlib-devel
+
+#phpenv
+phpenv_dependencies:
+  - gcc
+  - gcc-c++
+  - bzip2
+  - bzip2-devel
+  - bison
+  - re2c
+  - libxml2-devel
+  - openssl-devel
+  - libcurl-devel
+  - libjpeg-devel
+  - libpng-devel
+  - libicu-devel
+  - readline-devel
+  - libtidy-devel
+  - libxslt-devel
+  - libmcrypt-devel
+  - libzip5
+  - libzip
+  - libzip-last-devel
+
+#docker
+docker_dependencies:
+  - yum-utils
+  - device-mapper-persistent-data
+  - lvm2
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+
+#tmux
+tmux_dependencies:
+  - gcc
+  - automake
+  - libevent
+  - libevent-devel
+  - ncurses-devel
+  - bison
+  - bzip2
+  - bzip2-devel
+  - libicu-devel
+  - readline-devel
+  - re2c
+  - sqlite
+  - sqlite-devel
+  - openssl
+  - openssl-devel
+  - libffi-devel
+  - zlib-devel
+
+#global
+global_dependencies:
+  - autoconf
+  - wget
+  - ctags
+  - python-pygments
+  - gcc
+  - make
+  - automake
+  - libevent
+  - libevent-devel
+  - ncurses-devel
+  - bison
+  - bzip2
+  - bzip2-devel
+  - libicu-devel
+  - readline
+  - readline-devel
+  - re2c
+  - sqlite
+  - sqlite-devel
+  - openssl
+  - openssl-devel
+  - libffi-devel
+  - zlib-devel
+
+#vim8
+vim8_dependencies:
+  - perl-devel
+  - perl-ExtUtils-Embed
+  - gcc
+  - make
+  - ncurses-devel
+  - mercurial
+  - ruby-devel
+  - python-devel
+  - lua-devel
+
+#nvim
+nvim_dependencies:
+  - perl-devel
+  - perl-ExtUtils-Embed
+  - gcc
+  - make
+  - ncurses-devel
+  - mercurial
+  - ruby-devel
+  - python-devel
+  - lua-devel
+  - neovim

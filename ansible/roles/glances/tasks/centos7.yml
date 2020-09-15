@@ -1,0 +1,18 @@
+---
+# tasks file for roles/glances
+# For CentOS7
+- name: check installed glances
+  command: bash -lc "glances --version"
+  register: glances_exists
+  changed_when: False
+  ignore_errors: yes
+
+- name: install glances
+  become: true
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - glances
+  when: glances_exists is failed
+

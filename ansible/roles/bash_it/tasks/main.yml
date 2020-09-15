@@ -1,0 +1,29 @@
+---
+# tasks file for roles/bash_it
+
+- name: check installed bash_it
+  stat:
+    path: "~/.bash_it"
+  register: chk_dir
+  changed_when: False
+  ignore_errors: yes
+
+- name: git clone bash_it
+  git:
+    repo: https://github.com/Bash-it/bash-it.git
+    depth: 1
+    dest: "~/.bash_it"
+  when: chk_dir.stat.exists is false
+
+- name: bash_it install when not installed
+  shell: |
+    ./install.sh -s
+  args:
+    chdir: '~/.bash_it/'
+  when: chk_dir.stat.exists is false
+
+- name: change theme bash_it
+  command: bash -lc 'sed -i -e "s/bobby/{{ bash_it_theme }}/" ~/.bashrc'
+  when:
+    - chk_dir.stat.exists is false
+    - bash_it_theme is defined

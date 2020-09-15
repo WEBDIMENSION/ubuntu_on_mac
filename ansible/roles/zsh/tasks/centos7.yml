@@ -1,0 +1,10 @@
+---
+# tasks file for roles/zsh
+# For CentOS7
+- name: install zsh
+  become: true
+  yum:
+    name: "{{ item }}"
+  with_items:
+    - zsh
+  when: check_zsh_install is failed

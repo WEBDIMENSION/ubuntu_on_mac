@@ -1,0 +1,55 @@
+---
+
+- include: centos7.yml
+  when:
+   - ansible_distribution == "CentOS"
+   - ansible_distribution_major_version == "7"
+
+- include: ubuntu18.yml
+  when:
+   - ansible_distribution == "Ubuntu"
+   - ansible_distribution_major_version == "18"
+
+- name: git clone vim8
+  become: true
+  git:
+    repo: https://github.com/vim/vim
+    dest: "/usr/local/src/vim"
+  when: vim8_exists is failed
+
+- name: vim8 uninstall
+  become: true
+  command: bash -lc "rm -rf /usr/local/bin/vim"
+  changed_when: False
+  ignore_errors: yes
+  when: vim8_exists is failed
+
+- name: vim8 configure when not installed
+  become: true
+  command: >
+    ./configure
+    --prefix=/usr/local
+    --enable-fail-if-missing
+    --with-features=huge
+    --enable-perlinterp
+    --disable-selinux
+    --enable-python3interp
+    --enable-rubyinterp
+    --with-ruby-command={{ rbenv_path }}/shims/ruby
+    --enable-luainterp
+    --with-lua-prefix={{ luaenv_path }}/versions/{{ lua_version }}
+    --enable-cscope
+    --enable-fontset
+    --enable-multibyte
+    vi_cv_path_python3={{ pyenv_path }}/shims/python
+  args:
+    chdir: /usr/local/src/vim
+  when: vim8_exists is failed
+
+- name: vim8 install when not installed
+  become: true
+  shell: |
+    cd /usr/local/src/vim
+    make
+    sudo make install
+  when: vim8_exists is failed

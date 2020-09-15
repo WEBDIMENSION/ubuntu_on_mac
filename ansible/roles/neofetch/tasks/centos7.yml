@@ -1,0 +1,22 @@
+---
+# tasks file for roles/neofetch
+# For CentOS7
+- name: check installed neofetch
+  command: /bin/bash -lc "neofetch --version"
+  register: neofetch_exists
+  changed_when: False
+  ignore_errors: yes
+
+- name: add neofetch repo
+  become: true
+  command: "yum-config-manager --add-repo https://copr.fedorainfracloud.org/coprs/konimex/neofetch/repo/epel-7/konimex-neofetch-epel-7.repo"
+  when: neofetch_exists is failed
+
+- name: install neofetch
+  become: true
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - neofetch
+  when: neofetch_exists is failed

@@ -1,0 +1,7 @@
+ansible == 2.9.11
+ansible-lint == 4.3.1
+black == 19.10b0
+flake8 == 3.8.3
+pytest == 5.4.3
+PyYAML == 5.3.1
+testinfra == 5.2.2

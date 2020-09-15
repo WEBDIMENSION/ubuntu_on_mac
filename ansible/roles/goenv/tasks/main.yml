@@ -1,0 +1,87 @@
+---
+# tasks file for roles/goenv
+- name: check installed goenv
+  command: bash -lc "goenv --version"
+  register: goenv_exists
+  changed_when: False
+  ignore_errors: yes
+
+- name: clone goenv
+  git:
+    repo: https://github.com/syndbg/goenv.git
+    dest: ~/.goenv
+    force: yes
+    version: "{{ version | default('master') }}"
+  when:
+    - goenv_exists is failed
+    - goenv_state == "present"
+
+- name: set export GOENV_ROOT
+  lineinfile:
+    path: "{{ home_path }}/{{ shell_profile }}"
+    regexp: '^export GOENV_ROOT="{{ home_path }}/\.goenv"'
+    line: export GOENV_ROOT="{{ home_path }}/.goenv"
+    insertafter: EOF
+  when:
+    - goenv_exists is failed
+    - goenv_state == "present"
+
+- name: set export PATH
+  lineinfile:
+    path: "{{ home_path }}/{{ shell_profile }}"
+    regexp: '^export PATH="\$GOENV_ROOT/bin:\$PATH"'
+    line: export PATH="$GOENV_ROOT/bin:$PATH"
+    insertafter: EOF
+  when:
+    - goenv_exists is failed
+    - goenv_state == "present"
+
+- name: set goenv init
+  lineinfile:
+    path: "{{ home_path }}/{{ shell_profile }}"
+    regexp: '^eval "\$\(goenv init -\)"'
+    line: eval "$(goenv init -)"
+    insertafter: EOF
+  when:
+    - goenv_exists is failed
+    - goenv_state == "present"
+
+- name: set export PATH
+  lineinfile:
+    path: "{{ home_path }}/{{ shell_profile }}"
+    regexp: '^export PATH="\$GOROOT/bin:\$PATH"'
+    line: export PATH="$GOROOT/bin:$PATH"
+    insertafter: EOF
+  when:
+    - goenv_exists is failed
+    - goenv_state == "present"
+
+- name: set eport PATH
+  lineinfile:
+    path: "{{ home_path }}/{{ shell_profile }}"
+    regexp: '^export PATH="\$PATH:\$GOPATH/bin"'
+    line: export PATH="$PATH:$GOPATH/bin"
+    insertafter: EOF
+  when:
+    - goenv_exists is failed
+    - goenv_state == "present"
+
+- name: Check installed golang
+  shell: bash -lc "goenv versions | grep {{ golang_version }}"
+  register: golang_check_install
+  changed_when: False
+  ignore_errors: yes
+
+- name: Install golang when not installed
+  command: bash -lc "goenv install {{ golang_version }}"
+  when:
+    - goenv_exists is failed
+    - goenv_state == "present"
+    - golang_check_install is failed
+
+- name: Set golang global version
+  command: bash -lc "goenv global {{ golang_version }}"
+  when:
+    - goenv_exists is failed
+    - goenv_state == "present"
+    - golang_check_install is failed

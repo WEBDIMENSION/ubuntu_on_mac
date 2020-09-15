@@ -1,0 +1,78 @@
+---
+# tasks file for roles/ssh_config
+# authorized_keys
+#- name: check exists {{ home_path }}/.ssh/authorized_keys
+#  stat:
+#    path: ~/.ssh/authorized_keys
+#    register: check_exists_authorized_keys
+#
+#- name: Remove {{ home_path }}/.ssh/authorized_keys if exists
+#  file:
+#    path: "{{ home_path }}/.ssh/authorized_keys"
+#      state: absent
+#  when: check_exists_authorized_keys
+#
+#- name: check exists {{ home_path }}/.ssh/authorized_keys
+#  stat:
+#    path: ~/.ssh/authorized_keys
+#    register: check_exists_authorized_keys
+#
+#- name: Create {{ home_path }}/authorized_keys if exists
+#  file:
+#    path: "{{ home_path }}/.ssh/authorized_keys"
+#      state: present
+#  when: not check_exists_authorized_keys
+
+- name: cat rsa_pub
+  command: |
+    bash -lc "cat {{ home_path }}/.ssh/ansible_rsa.pub"
+  register: rsa_pub
+  when: True
+
+- name: Add id_rsa.pub >> autorized_keys
+  lineinfile:
+    path: "{{ home_path }}/.ssh/authorized_keys"
+    line: "{{ rsa_pub.stdout }}"
+
+#- name: make authorized_key
+#  command: |
+#    bash -lc "cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys && chmod 600 ~/.ssh/authorized_keys"
+#  when: not check_exists_authorized_keys
+#
+## config
+#- name: check exists {{ home_path }}/.ssh/config
+#  stat:
+#    path: ~/.ssh/config
+#    register: check_exists_config
+#
+#- name: Remove {{ home_path }}/.ssh/config if exists
+#  file:
+#    path: "{{ home_path }}/.ssh/config"
+#      state: absent
+#  when: check_exists_config
+#
+- name: check exists {{ home_path }}/.ssh/config
+  stat:
+    path: ~/.ssh/config
+  register: check_exists_config
+
+- name: make {{ home_path }}/.ssh/config. If not exists
+  file:
+    path: "{{ home_path }}/.ssh/config"
+    state: touch
+    mode: '0600'
+  when: not check_exists_config.stat.exists
+
+- name: Write .ssh/config
+  blockinfile:
+    path: "{{ home_path }}/.ssh/config"
+    block: |
+      Host *
+          StrictHostKeyChecking no
+
+#- name: Premission .ssh/*
+#  file:
+#    path: "{{ home_path }}/.ssh/*"
+#    state: file
+#    mode: '0600'
+#  when: True

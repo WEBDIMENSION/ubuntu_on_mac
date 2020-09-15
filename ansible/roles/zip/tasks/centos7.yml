@@ -1,0 +1,18 @@
+---
+# tasks file for roles/zip
+# For CentOS7
+- name: check installed zip unzip
+  command: /bin/bash -lc "zip --version"
+  register: zip_exists
+  changed_when: False
+  ignore_errors: yes
+
+- name: install zip unzip
+  become: true
+  yum:
+    state: present
+    name: "{{ item }}"
+  with_items:
+    - zip
+    - unzip
+  when: zip_exists is failed

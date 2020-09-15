@@ -1,0 +1,16 @@
+---
+# tasks file for roles/jq
+- name: check installed jq
+  command: bash -lc "jq --version"
+  register: jq_exists
+  changed_when: False
+  ignore_errors: yes
+
+- name: install jq
+  become: true
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - jq
+  when: jq_exists is failed

@@ -1,0 +1,20 @@
+<VirtualHost *:443>
+  ServerName {{ item.hostname }}
+  DocumentRoot {{ item.document_root }}
+  SSLEngine on
+  SSLCipherSuite AES256+EECDH:AES256+EDH
+  SSLProtocol All -SSLv2 -SSLv3
+  SSLHonorCipherOrder On
+  SSLCertificateFile {{ item.server_crt }}
+  SSLCertificateKeyFile {{ item.server_key }}
+  SSLCertificateChainFile {{ item.server_chain }}
+  <Directory "{{ item.document_root }}">
+    AllowOverride All
+    Options -Indexes +FollowSymLinks
+    Options +ExecCGI
+    AddHandler cgi-script .pl .cgi
+    Order allow,deny
+    Allow from all
+  </Directory>
+</VirtualHost>
+

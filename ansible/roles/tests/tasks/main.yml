@@ -1,0 +1,63 @@
+---
+# tasks file for roles/tests
+- name: check check maked virtualenv
+  command: bash -lc "pyenv versions | grep '/envs/develop'"
+  register: maked_virtualenv
+  changed_when: False
+  ignore_errors: yes
+
+- name: tests | make virtualenv
+  command: >
+    bash -lc "pyenv virtualenv {{ python_version }} develop"
+  when:
+    maked_virtualenv is failed
+
+- name: tests | applay virtualenv
+  command: >
+    bash -lc "pyenv local develop"
+  args:
+    chdir: "{{ deploy_path }}"
+  when:
+    maked_virtualenv is failed
+
+- name: tests | pip updrade
+  command: >
+    bash -lc "pip install --upgrade pip"
+  when: True
+
+- name: tests | install pip modules
+  command: |
+    bash -lc "pip install -r requirements.txt"
+  args:
+    chdir: "{{ deploy_path }}"
+  when: True
+
+- name: tests | exec ansible-lint
+  command: |
+    bash -lc "ansible-lint site.yml"
+  args:
+    chdir: "{{ deploy_path }}"
+  when: True
+
+- name: tests | exec black
+  command: |
+    bash -lc "black tests/"
+  args:
+    chdir: "{{ deploy_path }}"
+  when: True
+
+- name: tests | exec flake8
+  command: |
+    bash -lc "flake8 tests/"
+  args:
+    chdir: "{{ deploy_path }}"
+  when: True
+
+- name: tests | exec testinfra
+  command: |
+    bash -lc "py.test -v tests/testinfra.py --connection=local --hosts='ansible://vagrant_ubuntu18' --ansible-inventory='hosts/develop'"
+  args:
+    chdir: "{{ deploy_path }}"
+  when: True
+
+

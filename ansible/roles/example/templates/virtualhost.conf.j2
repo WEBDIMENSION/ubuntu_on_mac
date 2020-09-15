@@ -1,0 +1,13 @@
+<VirtualHost *:80>
+  ServerName {{ item.hostname }}
+  DocumentRoot {{ item.document_root }}
+  <Directory "{{ item.document_root }}">
+    AllowOverride All
+    Options -Indexes +FollowSymLinks
+    Options +ExecCGI
+    AddHandler cgi-script .pl .cgi
+    Order allow,deny
+    Allow from all
+  </Directory>
+</VirtualHost>
+

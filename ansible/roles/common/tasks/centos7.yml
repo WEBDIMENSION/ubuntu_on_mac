@@ -1,0 +1,20 @@
+---
+# tasks file for common
+# For CeotOS7
+- name: install epel
+  become: true
+  yum:
+    name: epel-release
+    state: installed
+
+- name: yum update
+  become: true
+  yum:
+    update_cache: yes
+
+- name: install development tools
+  become: true
+  yum:
+    name: "@Development tools"
+    state: present
+    skip_broken: true

@@ -1,0 +1,25 @@
+---
+# tasks file for roles/zsh
+
+- name: Check tmuxinator installed
+  command: bash -lc "zsh --version"
+  register: check_zsh_install
+  changed_when: False
+  ignore_errors: yes
+
+- include: centos7.yml
+  when:
+   - check_zsh_install is failed
+   - ansible_distribution == "CentOS"
+   - ansible_distribution_major_version == "7"
+
+- include: ubuntu18.yml
+  when:
+   - check_zsh_install is failed
+   - ansible_distribution == "Ubuntu"
+   - ansible_distribution_major_version == "18"
+
+- name: zprofile
+  command: bash -lc "ln -sf {{ shell_profile }} ~/.zprofile"
+  when: check_zsh_install is failed
+

@@ -1,0 +1,9 @@
+---
+# tasks file for rbenv
+# For CentOS7
+- name: Install dependencies for ruby-build (see. https://github.com/sstephenson/ruby-build/wiki)
+  become: true
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ ruby_dependencies }}"

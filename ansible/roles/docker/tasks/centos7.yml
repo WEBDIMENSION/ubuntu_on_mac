@@ -1,0 +1,29 @@
+---
+# tasks file for roles/docer
+# For CentOS7
+- name: check installed docker
+  command: bash -lc "docker --version"
+  register: docker_exists
+  changed_when: False
+  ignore_errors: yes
+
+
+- name: Add docker GPG key
+  become: yes
+  rpm_key:
+    key: https://download.docker.com/linux/ubuntu/gpg
+  when: docker_exists is failed
+
+- name: add docker repo
+  become: yes
+  command: yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
+  when: docker_exists is failed
+
+- name: install Docker
+  become: yes
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_list: "{{ docker_dependencies }}"
+  notify: service_docker_enabled
+  when: docker_exists is failed

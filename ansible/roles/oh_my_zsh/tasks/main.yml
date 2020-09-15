@@ -1,0 +1,25 @@
+---
+# tasks file for roles/oh-my-zsh
+- name: check installed oh-my-zsh
+  stat:
+    path: "~/.oh-my-zsh"
+  register: chk_dir
+  changed_when: False
+  ignore_errors: yes
+
+- name: git clone oh-my-zsh
+  git:
+    repo: https://github.com/robbyrussell/oh-my-zsh.git
+    dest: "~/.oh-my-zsh"
+  when: chk_dir.stat.exists is false
+
+- name: copy .zshrc
+  shell: >
+    cp -f ~/.oh-my-zsh/templates/zshrc.zsh-template ~/.zshrc
+  when: chk_dir.stat.exists is false
+
+- name: change theme oh-my-zsh
+  command: bash -lc  'sed -i -e "s/robbyrussell/{{ oh_my_zsh_theme }}/" ~/.zshrc'
+  when:
+    - chk_dir.stat.exists is false
+    - oh_my_zsh_theme is defined

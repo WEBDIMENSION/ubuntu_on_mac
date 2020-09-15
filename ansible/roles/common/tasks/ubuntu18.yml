@@ -1,0 +1,7 @@
+---
+# tasks file for common
+# For Ubuntu18
+- name: apt update
+  become: true
+  apt:
+    update_cache: yes

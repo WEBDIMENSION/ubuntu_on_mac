@@ -1,0 +1,43 @@
+---
+# tasks file for roles/tmux
+
+- name: check installed tmux
+  command: bash -lc "tmux -V"
+  register: tmux_exists
+  changed_when: False
+  ignore_errors: yes
+
+- include: centos7.yml
+  when:
+   - tmux_exists is failed
+   - ansible_distribution == "CentOS"
+   - ansible_distribution_major_version == "7"
+
+- include: ubuntu18.yml
+  when:
+   - tmux_exists is failed
+   - ansible_distribution == "Ubuntu"
+   - ansible_distribution_major_version == "18"
+
+- name: Remove tmux src
+  become: true
+  command: bash -lc "rm -rf /usr/local/bin/tmux"
+  when: tmux_exists is failed
+
+- name: tmux git clone
+  become: true
+  git:
+    repo: https://github.com/tmux/tmux
+    dest: "/usr/local/src/tmux"
+  when: tmux_exists is failed
+
+- name: tmux install when not installed
+  become: true
+  shell: |
+    ./autogen.sh
+    ./configure --prefix=/usr/local
+    make
+    make install
+  args:
+    chdir: '/usr/local/src/tmux'
+  when: tmux_exists is failed

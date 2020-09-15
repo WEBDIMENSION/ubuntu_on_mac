@@ -1,0 +1,29 @@
+---
+# tasks file for roles/nvim
+
+- name: check installed nvim
+  command: bash -lc "nvim --version"
+  register: nvim_exists
+  changed_when: False
+  ignore_errors: yes
+
+- name: pip-nvim install when not installed
+  command:  bash -lc "pip3 install neovim"
+  when: nvim_exists is failed
+
+- include: centos7.yml
+  when:
+   - nvim_exists is failed
+   - ansible_distribution == "CentOS"
+   - ansible_distribution_major_version == "7"
+
+- include: ubuntu18.yml
+  when:
+   - nvim_exists is failed
+   - ansible_distribution == "Ubuntu"
+   - ansible_distribution_major_version == "18"
+
+
+- name: nvim install when not installed
+  command: bash -lc "mkdir -p ~/.config/nvim && touch ~/.config/nvim/init.vim && echo 'source ~/.vimrc' > ~/.config/nvim/init.vim"
+  when: nvim_exists is failed

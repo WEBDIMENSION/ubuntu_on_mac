@@ -1,0 +1,95 @@
+---
+# tasks file for roles/phpenv
+- name: check installed phpenv
+  command: bash -lc "phpenv --version"
+  register: phpenv_exists
+  changed_when: False
+  ignore_errors: yes
+
+# OS branch start
+- include: centos7.yml
+  when:
+   - phpenv_exists is failed
+   - ansible_distribution == "CentOS"
+   - ansible_distribution_major_version == "7"
+
+- include: ubuntu18.yml
+  when:
+   - phpenv_exists is failed
+   - ansible_distribution == "Ubuntu"
+   - ansible_distribution_major_version == "18"
+# OS branch ennd
+
+- name: phpenv install when not installed
+  git:
+    repo: https://github.com/phpenv/phpenv.git
+    dest: "{{ phpenv_path }}"
+  when: phpenv_exists is failed
+
+- name: install php-build
+  git:
+    repo: https://github.com/php-build/php-build
+    dest: "{{ phpenv_path }}/plugins/php-build"
+  when: phpenv_exists is failed
+
+- name: install php-build
+  become: true
+  command: bash -lc "{{ phpenv_path }}/plugins/php-build/install.sh"
+  when: phpenv_exists is failed
+
+- name: ENV for bashrc
+  blockinfile:
+    dest: "{{ home_path }}/{{ shell_profile }}"
+    create: yes
+    insertafter: '^PATH=\$PATH:\$HOME/bin$'
+    marker: "# {mark} ANSIBLE phpenv"
+    content: |
+      export PHPENV_ROOT={{ phpenv_path }}
+      export PATH="$PHPENV_ROOT/bin:$PATH"
+      eval "$(phpenv init -)"
+  when: phpenv_exists is failed
+
+- name: Check installed php
+  shell: bash -lc "phpenv versions | grep {{ php_version }}"
+  register: php_check_install
+  changed_when: False
+  ignore_errors: yes
+  when:
+    - install_php is true
+
+- name: check installed phpenv
+  command: bash -lc "phpenv --version"
+  register: phpenv_version
+  changed_when: False
+  ignore_errors: yes
+  when:
+    - install_php is true
+
+- name: debug phpenv --version
+  debug:
+    msg: "{{ phpenv_version }}"
+  when:
+    - install_php is true
+
+- name: Install php when not installed
+  command: bash -lc "phpenv install {{ php_version }}"
+  args:
+    creates: "{{ phpenv_path }}/versions/{{ php_version }}"
+  when:
+    - php_check_install is failed
+    - install_php is true
+
+- name: Check php global
+  shell: bash -lc "phpenv version | grep {{ php_version }}"
+  register: php_check_default
+  changed_when: False
+  ignore_errors: yes
+  when:
+    - install_php is true
+
+- name: Set php global version
+  command: bash -lc "phpenv global {{ php_version }}"
+  when:
+    - php_check_install is failed
+    - install_php is true
+

@@ -1,0 +1,16 @@
+---
+# tasks file for roles/docer
+# For CentOS7
+- name: check installed pwgen
+  command: bash -lc "pwgen"
+  register: pwgen_exists
+  changed_when: False
+  ignore_errors: yes
+
+
+- name: Install pwgen
+  become: yes
+  yum:
+    name: "pwgen"
+    state: present
+  when: pwgen_exists is failed

@@ -1,0 +1,41 @@
+---
+# tasks file for roles/git
+# For CentOS7
+- name: Debug get Git current version
+  command: bash -lc "git  --version"
+  register: git_exists
+  changed_when: False
+  ignore_errors: yes
+
+  #- name: Debug display Git current version
+  #  debug:
+  #    msg: "{{ git_exists }}"
+
+- name: Get repository for git
+  become: true
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - https://centos7.iuscommunity.org/ius-release.rpm
+  when:
+    - git_exists is failed
+
+- name: Install git and yum-utlis
+  become: true
+  yum:
+    name: "{{ item }}"
+    enablerepo: ius
+    state: present
+  with_items:
+    - git2u
+    - yum-utils
+  when:
+    - git_exists is failed
+
+- name: Disable ius repository
+  become: true
+  command: yum-config-manager --disable ius
+  when:
+    - git_exists is failed
+

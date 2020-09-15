@@ -1,0 +1,68 @@
+---
+# tasks file for nodenv
+# For ubuntu18
+
+- name: check installed nodenv
+  command: "{{ nodenv }} --version"
+  register: nodenv_exists
+  changed_when: False
+  ignore_errors: yes
+
+  #- name: debug
+  #  debug:
+  #    msg: "{{ ansible_env }}"
+  #
+  #- name: debug
+  #  debug:
+  #    msg: "{{ nodenv_path }}"
+
+- name: nodenv install when not installed
+  git:
+    repo: git://github.com/nodenv/nodenv.git
+    dest: "{{ nodenv_path }}"
+  when: nodenv_exists is failed
+
+- name: nodenv-build install when not installed
+  git:
+    repo: git://github.com/nodenv/node-build.git
+    dest: "{{ nodenv_path }}/plugins/node-build"
+    #when: nodenv_exists is failed
+
+- name: ENV for bashrc
+  blockinfile:
+    dest: "{{ home_path }}/.bashrc"
+    create: yes
+    insertafter: '^PATH=\$PATH:\$HOME/bin$'
+    content: |
+      export NODENV_ROOT={{ nodenv_path }}
+      export PATH="$NODENV_ROOT/bin:$PATH"
+      eval "$(nodenv init -)"
+  when: nodenv_exists is failed
+
+
+- name: Check installed node
+  shell: bash -lc "{{ nodenv }} versions | grep {{ node_version }}"
+  register: nodenv_check_install
+  changed_when: False
+  ignore_errors: yes
+
+- name: debug
+  debug:
+    msg: "{{ nodenv }}"
+
+- name: Install node when not installed
+  command: bash -lc "{{ nodenv }} install {{ node_version }}"
+  when: nodenv_check_install is failed
+  args:
+    creates: "{{ node_dir }}"
+
+- name: Check node global
+  shell: bash -lc "{{ nodenv }} version | grep {{ node_version }}"
+  register: node_check_default
+  changed_when: False
+  ignore_errors: yes
+
+- name: Set node global version
+  command: bash -lc "{{ nodenv }} global {{ node_version }}"
+  when: node_check_default is failed
+

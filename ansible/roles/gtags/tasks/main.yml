@@ -1,0 +1,51 @@
+---
+# tasks file for roles/gtags
+- name: check installed gtags
+  command: bash -lc "gtags --version"
+  register: gtags_exists
+  changed_when: False
+  ignore_errors: yes
+
+- name: pygments install when not installed
+  command: bash -lc "pip install pygments"
+  when: gtags_exists is failed
+
+- name: Download global
+  become: true
+  get_url:
+    url: "http://tamacom.com/global/global-{{ global_version }}.tar.gz"
+    dest: /usr/local/src
+  when: gtags_exists is failed
+
+- name: global archive
+  become: true
+  command: bash -lc "tar xvf global-{{ global_version }}.tar.gz"
+  args:
+    chdir: '/usr/local/src/'
+  when: gtags_exists is failed
+
+- name: global configure when not installed
+  become: true
+  shell: |
+    ./configure --disable-gtagscscope
+    make
+    sudo make install
+  args:
+    chdir: '/usr/local/src/global-{{ global_version }}'
+  when: gtags_exists is failed
+
+- name: Copy gtags.conf
+  become: true
+  shell: >
+    cp /usr/local/share/gtags/gtags.conf /etc/gtags.conf
+  when: gtags_exists is failed
+
+- name: Export env pygments
+  blockinfile:
+    dest: "{{ home_path }}/{{ shell_profile }}"
+    create: yes
+    marker: "# {mark} ANSIBLE gtags "
+    state: "{{ global_state }}"
+    block: |
+      export GTAGSLABEL=pygments
+  when: gtags_exists is failed

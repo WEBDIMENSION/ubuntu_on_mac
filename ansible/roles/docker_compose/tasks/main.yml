@@ -1,0 +1,15 @@
+---
+# tasks file for docker-compose
+- name: check installed docker-compose
+  command: bash -lc "docker-compose --version"
+  register: docker_compose_exists
+  changed_when: False
+  ignore_errors: yes
+
+- name: Install docker-compose
+  become: yes
+  get_url:
+    url: "https://github.com/docker/compose/releases/download/{{ docker_compose_version }}/docker-compose-{{ ansible_system }}-{{ ansible_architecture }}"
+    dest: /usr/local/bin/docker-compose
+    mode: +x
+  when: docker_compose_exists is failed

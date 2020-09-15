@@ -1,0 +1,16 @@
+---
+# tasks file for roles/git
+
+- name: debug
+  debug:
+    msg: "{{ ansible_distribution }}"
+
+- include: centos7.yml
+  when:
+   - ansible_distribution == "CentOS"
+   - ansible_distribution_major_version == "7"
+
+- include: ubuntu18.yml
+  when:
+   - ansible_distribution == "Ubuntu"
+   - ansible_distribution_major_version == "18"

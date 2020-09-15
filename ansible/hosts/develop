@@ -1,0 +1,8 @@
+[develop]
+vagrant_ubuntu18 ansible_host=127.0.0.1 ansible_connection=local
+vagrant_centos7 ansible_host=127.0.0.1 ansible_connection=local
+[ubuntu18]
+vagrant_ubuntu18
+[centos7]
+vagrant_centos7
+

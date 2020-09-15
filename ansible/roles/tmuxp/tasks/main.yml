@@ -1,0 +1,11 @@
+---
+# tasks file for roles/tmuxp
+- name: Check tmuxp installed
+  command: bash -lc "tmuxp --version"
+  register: check_tmuxp_install
+  changed_when: False
+  ignore_errors: yes
+
+- name: install tmuxp
+  command: bash -lc "pip install tmuxp"
+  when: check_tmuxp_install is failed

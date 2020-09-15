@@ -1,0 +1,11 @@
+---
+# tasks file for roles/example
+
+#- name: Get certs
+#  become: yes
+#  shell: >
+#    echo "{{ item.hostname }}"
+#  register: result
+#  with_items:
+#    - "{{ virtualhosts }}"
+

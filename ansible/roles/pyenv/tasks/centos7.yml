@@ -1,0 +1,8 @@
+---
+# tasks file for pyenv
+# For  CentOS7
+- name: dependencies install
+  become: true
+  yum:
+    name: "{{ item }}"
+  with_items: "{{ python_dependencies }}"

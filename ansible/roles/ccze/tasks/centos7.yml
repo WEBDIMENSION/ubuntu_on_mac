@@ -1,0 +1,17 @@
+---
+# tasks file for roles/ccze
+# For CentOS7
+- name: check installed ccze
+  command: bash -lc "ccze --version"
+  register: ccze_exists
+  changed_when: False
+  ignore_errors: yes
+
+- name: install ccze
+  become: true
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - ccze
+  when: ccze_exists is failed

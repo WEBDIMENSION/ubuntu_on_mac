@@ -1,0 +1,10 @@
+---
+# tasks file for sshpass
+# For Ubuntu18
+- name: Install sshpass
+  become: true
+  apt:
+    name: "{{ item }}"
+  with_items: "{{ sshpass.sshpass }}"
+
+

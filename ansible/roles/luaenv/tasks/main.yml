@@ -1,0 +1,55 @@
+---
+# tasks file for roles/luaenv
+
+- name: check installed luaenv
+  command: bash -lc "luaenv --version"
+  register: luaenv_exists
+  changed_when: False
+  ignore_errors: yes
+
+- name: luaenv install when not installed
+  git:
+    repo: https://github.com/cehoffman/luaenv.git
+    dest: "{{ luaenv_path }}"
+  when: luaenv_exists is failed
+
+- name: lua-build install when not installed
+  git:
+    repo: https://github.com/cehoffman/lua-build.git
+    dest: "{{ luaenv_path }}/plugins/lua-build"
+
+
+- name: ENV for bashrc
+  blockinfile:
+    dest: "{{ home_path }}/{{ shell_profile }}"
+    create: yes
+    insertafter: '^PATH=\$PATH:\$HOME/bin$'
+    marker: "# {mark} ANSIBLE luaenv "
+    content: |
+      export LUAENV_ROOT={{ luaenv_path }}
+      export PATH="$LUAENV_ROOT/bin:$PATH"
+      eval "$(luaenv init -)"
+  when: luaenv_exists is failed
+
+
+- name: Check installed lua
+  shell: bash -lc "luaenv versions | grep {{ lua_version }}"
+  register: luaenv_check_install
+  changed_when: False
+  ignore_errors: yes
+
+- name: Install lua when not installed
+  command: bash -lc "luaenv install -f {{ lua_version }}"
+  when: luaenv_check_install is failed
+  args:
+    creates: "{{ luaenv_path }}/versions/{{ lua_version }}"
+
+- name: Check lua global
+  command: bash -lc "luaenv version | grep {{ lua_version }}"
+  register: luaenv_check_default
+  changed_when: False
+  ignore_errors: yes
+
+- name: Set lua global version
+  command: bash -lc "luaenv global {{ lua_version }}"
+  when: luaenv_check_default is failed

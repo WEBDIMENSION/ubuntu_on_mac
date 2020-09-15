@@ -1,0 +1,116 @@
+---
+- name: develop
+  hosts: develop
+
+  roles:
+    - role: common
+      tags:
+        - common
+    - role: hostname
+      tags:
+        - hostname
+    - role: ssh_config
+      tags:
+        - ssh_config
+    - role: gnupg2
+      tags:
+        - gnupg2
+    - role: pass
+      tags:
+        - pass
+    - role: sshpass
+      tags:
+        - sshpass
+    - role: git
+      tags:
+        - git
+    - role: zip
+      tags:
+        - zip
+    - role: goenv
+      tags:
+        - goenv
+    - role: pyenv
+      tags:
+        - pyenv
+    - role: rbenv
+      tags:
+        - rbenv
+    - role: luaenv
+      tags:
+        - luaenv
+    - role: phpenv
+      tags:
+        - phpenv
+    - role: nodenv
+      tags:
+        - nodenv
+    - role: tmux
+      tags:
+        - tmux
+    - role: tmuxinator
+      tags:
+        - tmuxinator
+    - role: tmuxp
+      tags:
+        - tmuxp
+    - role: docker
+      tags:
+        - docker
+    - role: docker_compose
+      tags:
+        - docker_compose
+    - role: bash_it
+      tags:
+        - bash_it
+    - role: zsh
+      tags:
+        - zsh
+    - role: oh_my_zsh
+      tags:
+        - oh_my_zsh
+    - role: ctags
+      tags:
+        - ctags
+    - role: gtags
+      tags:
+        - gtags
+    - role: circleci
+      tags:
+        - circleci
+    - role: glances
+      tags:
+        - glances
+    - role: neofetch
+      tags:
+        - neofetch
+    - role: ccze
+      tags:
+        - ccze
+    - role: vim8
+      tags:
+        - vim8
+    - role: nvim
+      tags:
+        - nvim
+    - role: lazydocker
+      tags:
+        - lazydocker
+    - role: pwgen
+      tags:
+        - pwgen
+    - role: nmap
+      tags:
+        - nmap
+    - role: jq
+      tags:
+        - jq
+    - role: tree
+      tags:
+        - tree
+    - role: tests
+      tags:
+        - tests
+    # - role: develop_init
+    #   tags:
+    #     - develop_init

@@ -1,0 +1,8 @@
+---
+# tasks file for ansible
+# For CentOS7
+- name: nvim dependencies
+  become: true
+  yum:
+    name: "{{ item }}"
+  with_items: "{{ nvim_dependencies }}"

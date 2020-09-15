@@ -1,0 +1,12 @@
+---
+# tasks file for roles/tmuxinator
+- name: Check tmuxinator installed
+  command: bash -lc "tmuxinator version"
+  register: check_tmuxinator_install
+  changed_when: False
+
+  ignore_errors: yes
+
+- name: install tmuxinator
+  command: bash -lc "gem install tmuxinator"
+  when: check_tmuxinator_install is failed

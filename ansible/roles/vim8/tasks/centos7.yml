@@ -1,0 +1,24 @@
+---
+# tasks file for vim8
+# For CentOS7
+- name: Get hostname
+  command: bash -lc "hostname"
+  register: hostname
+  changed_when: False
+  ignore_errors: yes
+
+- name: check installed vim8
+  #shell: bash -lc "vim --version"
+  shell: "vim --version | grep 'Compiled {{ hostname.stdout }}'"
+  register: vim8_exists
+  changed_when: False
+  ignore_errors: yes
+
+- name: Install dependencies for vim8
+  become: true
+  yum:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ vim8_dependencies }}"
+  when:
+   - vim8_exists is failed

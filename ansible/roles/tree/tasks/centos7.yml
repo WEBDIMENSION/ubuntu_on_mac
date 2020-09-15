@@ -1,0 +1,17 @@
+---
+# tasks file for roles/tree
+# For CentOS7
+- name: check installed tree
+  command: bash -lc "which tree"
+  register: tree_exists
+  changed_when: False
+  ignore_errors: yes
+
+
+- name: Install tree
+  become: yes
+  yum:
+    name: "tree"
+    state: present
+  when: tree_exists is failed
+

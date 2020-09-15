@@ -1,0 +1,22 @@
+---
+# tasks file for phpenv
+# For CeentOS7
+- name: Install remi-release-7
+  become: true
+  yum:
+    name: http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
+    state: installed
+
+
+- name: Install dependencies for phpenv
+  become: true
+  yum:
+    name: "{{ item }}"
+    state: present
+    enablerepo:
+      - remi
+      - remi-php73
+      - epel
+  with_items: "{{ phpenv_dependencies }}"
+
+

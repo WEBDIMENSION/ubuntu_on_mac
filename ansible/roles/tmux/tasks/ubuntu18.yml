@@ -1,0 +1,10 @@
+---
+# tasks file for tmux
+# For ubuntu18
+- name: Install dependencies for tmux
+  become: true
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items: "{{ tmux_dependencies }}"
+  when: tmux_exists is failed

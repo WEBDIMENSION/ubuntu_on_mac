@@ -1,0 +1,43 @@
+---
+# defaults file for roles/example
+virtualhosts:
+  - hostname: virtualexample1.com
+    document_root: /var/www/vhosts/virtualexample1.com
+    log: /var/www/vhosts/virtualexample1.com/LOG
+    conf_options:
+      - AllowOverride All
+      - Options -Indexes +FollowSymLinks
+      - Options +ExecCGI
+      - AddHandler cgi-script .pl .cgi
+      - Order allow,deny
+      - Allow from all
+    letsencrypt:
+      state: 'present'
+      minute: "0"
+      hour: "11"
+      day: "1"
+      month: "*"
+      weekday: "*"
+    server_crt: '/etc/pki/tls/certs/localhost.crt'
+    server_key: '/etc/pki/tls/private/localhost.key'
+    server_chain: '/etc/pki/tls/certs/ca-bundle.crt'
+  - hostname: virtualexample2.com
+    document_root: /var/www/vhosts/virtualexample2.com
+    log: /var/www/vhosts/virtualexample2.com/LOG
+    conf_options:
+      - AllowOverride All
+      - Options -Indexes +FollowSymLinks
+      - Options +ExecCGI
+      - AddHandler cgi-script .pl .cgi
+      - Order allow,deny
+      - Allow from all
+    letsencrypt:
+      state: 'present'
+      minute: "0"
+      hour: "14"
+      day: "5"
+      month: "*"
+      weekday: "*"
+    server_crt: '/etc/pki/tls/certs/localhost.crt'
+    server_key: '/etc/pki/tls/private/localhost.key'
+    server_chain: '/etc/pki/tls/certs/ca-bundle.crt'

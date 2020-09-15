@@ -1,0 +1,15 @@
+---
+# tasks file for circlci
+- name: check installed circleci
+  command: bash -lc "circleci --version"
+  register: circleci_exists
+  changed_when: False
+  ignore_errors: yes
+
+- name: Install circleci
+  become: yes
+  get_url:
+    url: "https://circle-downloads.s3.amazonaws.com/releases/build_agent_wrapper/circleci"
+    dest: /usr/local/bin/circleci
+    mode: +x
+  when: circleci_exists is failed
