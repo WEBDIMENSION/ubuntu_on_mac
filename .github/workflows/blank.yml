@@ -32,8 +32,11 @@ jobs:
           echo Add other actions to build,
           echo test, and deploy your project.
 
-      - name: Run a one-line script
+      - name: python --version
         run: python --version
 
-      - name: Run a one-line script
+      - name: pip --version
         run: pip --version
+
+      - name: pip install requirements.txt
+        run: pip install -r ansible/requirements.txt
