@@ -31,6 +31,7 @@ jobs:
         run: |
           echo Add other actions to build,
           echo test, and deploy your project.
-          echo python --version
 
+      - name: Run a one-line script
+        run: python --version
 
