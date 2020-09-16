@@ -1,0 +1,148 @@
+---
+# defaults file for Group Ubuntu20
+shell_profile: '.profile'
+
+#pyenv
+python_dependencies:
+  - build-essential
+  - libbz2-dev
+  - libffi-dev
+  - liblzma-dev
+  - libreadline-dev
+  - libsqlite3-dev
+  - libssl-dev
+  - zlib1g-dev
+
+#rbenv
+ruby_dependencies:
+  - autoconf
+  - bison
+  - build-essential
+  - libcurl4-openssl-dev
+  - libffi-dev
+  - libgdbm-dev
+  - libncurses5-dev
+  - libssl-dev
+  - libreadline-dev
+  - libreadline6-dev
+  - libyaml-dev
+  - ruby-dev
+  - zlib1g-dev
+
+#tmux
+tmux_dependencies:
+  - automake
+  - bison
+  - build-essential
+  - pkg-config
+  - libevent-dev
+  - libncurses5-dev
+  - libssl-dev
+  - libreadline-dev
+  - libreadline6-dev
+  - libyaml-dev
+  - zlib1g-dev
+
+#php
+php_dependencies:
+  - php
+  - php-devel
+  - php-mbstring
+  - php-pdo
+  - php-gd
+  - php-xml
+  - php-mcrypt
+  - php-fpm
+  - php-enchant
+  - php-IDNA_Convert
+  - php-mbstring
+  - php-mysql
+  - php-PHPMailer
+  - php-process
+  - php-simplepie
+  - php-xml
+
+#phpenv
+phpenv_dependencies:
+  - autoconf
+  - re2c
+  - bison
+  - libxml2-dev
+  - libcurl4-openssl-dev
+  - libjpeg8-dev
+  - libpng-dev
+  - libmcrypt-dev
+  - libreadline-dev
+  - libtidy-dev
+  - libxslt1-dev
+  - libssl-dev
+  - openssl
+  - libzip-dev
+  - libbz2-dev
+    #  - autoconf
+    #  - bison
+    #  - libbz2-dev
+    #  - libjpeg-dev
+    #  - libmcrypt-dev
+    #  - libreadline-dev
+    #  - libssl-dev
+    #  - libtidy-dev
+    #  - libxslt-dev
+    #  - libxml2-dev
+    #  - libpng-dev
+    #  - libmcrypt-dev
+    #  - libreadline-dev
+    #  - libtidy-dev
+    #  - libxslt-dev
+    #  - libxml2-dev
+    #  - libzip-dev
+    #  - openssl-dev
+    #  - re2c
+
+#docker
+docker_dependencies:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+
+#global
+global_dependencies:
+  - exuberant-ctags
+  - python-pygments
+  - automake
+  - autoconf
+  - gperf
+  - bison
+  - flex
+  - texinfo
+
+#vim8
+vim8_dependencies:
+  - make
+  - cmake
+  - autogen
+  - automake
+  - libffi-dev
+  - libperl-dev
+  - libbz2-dev
+  - zlib1g-dev
+  - libreadline-dev
+  - libssl-dev
+  - libsqlite3-dev
+
+#nvim
+nvim_dependencies:
+  - software-properties-common
+  - build-essential
+  - libbz2-dev
+  - libdb-dev
+  - libreadline-dev
+  - libffi-dev
+  - libgdbm-dev
+  - liblzma-dev
+  - libncursesw5-dev
+  - libsqlite3-dev
+  - libssl-dev
+  - zlib1g-dev
+  - uuid-dev
+  - tk-dev

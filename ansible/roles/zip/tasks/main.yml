@@ -7,5 +7,10 @@
 
 - include: ubuntu18.yml
   when:
-   - ansible_distribution == "Ubuntu"
+   - ansible_distribution == "ubuntu"
    - ansible_distribution_major_version == "18"
+
+- include: ubuntu20.yml
+  when:
+    - ansible_distribution == "ubuntu"
+    - ansible_distribution_major_version == "20"

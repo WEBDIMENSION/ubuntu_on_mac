@@ -1,0 +1,17 @@
+---
+# tasks file for roles/pwgen
+# For Ubuntu18
+- name: check installed tree
+  command: bash -lc "which tree"
+  register: tree_exists
+  changed_when: False
+  ignore_errors: yes
+
+
+- name: Install tree
+  become: yes
+  apt:
+    name: "tree"
+    state: present
+  when: tree_exists is failed
+

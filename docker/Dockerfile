@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 RUN apt-get update && \
     apt-get install -y software-properties-common \
                        tzdata
@@ -34,12 +34,18 @@ ENV PATH $PATH:/root/.pyenv/shims
 #RUN apt-get install libapt-pkg-dev
 RUN pip install --upgrade pip
 
-#RUN apt-get update
-#RUN apt-get install -y \
-#    openssh-server \
-# && rm -rf /var/lib/apt/lists/*
+RUN apt-get update
+RUN apt-get install -y \
+    openssh-server \
+ && rm -rf /var/lib/apt/lists/*
 #
-#RUN mkdir -p /var/run/sshd && chmod 755 /var/run/sshd
+RUN mkdir -p /var/run/sshd && chmod 755 /var/run/sshd
+
+
+COPY  /home/vagrant/.ssh/id_rsa /root/.ssh/id_rsa
+COPY  /home/vagrant/.ssh/id_rsa.pub /root/.ssh/id_rsa.pub
+COPY  /home/vagrant/.ssh/ansible_rsa /root/.ssh/ansible_rsa
+COPY  /home/vagrant/.ssh/ansible_rsa.pub /root/.ssh/ansible_rsa.pub
 #
 #RUN curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
 #RUN echo $'\n\
@@ -60,5 +66,5 @@ RUN pip install --upgrade pip
 # && echo "ubuntu ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers \
 # && mkdir -p /home/ubuntu && chown -R ubuntu.ubuntu /home/ubuntu
 #
-#STOPSIGNAL SIGRTMIN+3
-#CMD [ "/sbin/init" ]
+STOPSIGNAL SIGRTMIN+3
+CMD [ "/sbin/init" ]

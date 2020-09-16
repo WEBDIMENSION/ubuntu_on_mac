@@ -13,8 +13,8 @@ vm:
   #  Ubuntu Vmware Fusion
   ##################################
   - vm_name: "dev"
-    box_name: "generic/ubuntu1804"
-    box_version: "3.0.12"
+    box_name: "generic/ubuntu2004"
+    box_version: "3.0.30"
     private_network:
       - name: "vm host"
         ip: "192.168.33.100"
@@ -53,6 +53,7 @@ vm:
       playbook: "/home/vagrant/ansible/site.yml"
       inventory_path: "/home/vagrant/ansible/hosts/develop"
       galaxy_roles_path: "/home/vagrant/ansible/roles"
-      limit: "vagrant_ubuntu18"
+#      limit: "vagrant_ubuntu18"
+      limit: "vagrant_ubuntu20"
       # tags: [] # when need tags. Relation Vagrantfile
       # skip_tags: [] # when need tags Relation Vagrantfile

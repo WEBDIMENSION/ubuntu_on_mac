@@ -40,7 +40,7 @@ def test_installed_pkg(host):
         "pass",
         "zip",
         "docker-ce",
-        "python",
+        # "python",
         "ruby",
         "zsh",
         "glances",

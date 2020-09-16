@@ -1,0 +1,21 @@
+---
+# tasks file for roles/git
+# For Ubuntu18
+- name: Debug get Git current version
+  command: bash -lc "git  --version"
+  register: git_exists
+  changed_when: False
+  ignore_errors: yes
+
+  #- name: Debug display Git current version
+  #  debug:
+  #    msg: "{{ git_exists }}"
+
+- name: install git
+  become: yes
+  apt:
+    name: git
+    update_cache: yes
+    force: yes
+  when:
+    - git_exists is failed
