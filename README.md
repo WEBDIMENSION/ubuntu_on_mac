@@ -3,7 +3,14 @@
 ## Required apps (必要アプリ)
 - Vagrant
 - VMware-Fusion or VirtualBox
-- Ubuntu18.04 Image for VMware-Fusion  or VirtualBox
+- Ubuntu(18.04 or 20.04) Image for VMware-Fusion  or VirtualBox
+- Vagrant plugin for VMware
+## Environment
+```bash
+Mac 10.15.6 
+Vagrant 2.2.9
+vmware fusion 11.5.5 
+```
 ## Purpose 
 > Docer for Mac is too late. Create develop (ubuntu18) on mac 
 > Install ether tools
@@ -17,14 +24,23 @@ ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu18
 ```
 #### Tags (specification Tag)
 ```bash
+# Ubuntu18.04
 ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu18 -t tag
+# Ubuntu20.04
+ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu20 -t tag
 ```
 #### Skip-tags (Exclusion Tag)
 ```bash
+# Ubuntu18.04
 ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu18 --skip-tags tag
+# Ubuntu20.04
+ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu20 --skip-tags tag
 ```
 #### Example
+# Ubuntu18.04
 ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu18 -t ansible
+# Ubuntu20.04
+ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu20 -t ansible
 
 ### Case Vagrant provisioning
 Vagaratfile
@@ -181,42 +197,40 @@ if settings['system_command_after']
 end
 
 ```
-vagrant_vmware.yaml
+vagrant.yaml
 ```yml
 ##################################
 #  Before command
 ##################################
 system_command_before:
-    #- 'touch test.txt'
+#- 'touch test.txt'
 ##################################
 #  After command
 ##################################
 system_command_after:
-    #- 'touch test2.txt'
+#- 'touch test2.txt'
 vm:
   ##################################
-  #  develop Vmware Fusion
+  #  Ubuntu Vmware Fusion
   ##################################
-  - vm_name: "develop"
+  - vm_name: "dev_u18" # As you like
     box_name: "generic/ubuntu1804"
     box_version: "3.0.12"
     private_network:
       - name: "vm host"
-        ip: "192.168.33.10" # Vagrant IP address
-    host_name: "develop.local" # Hostname (As you like)
-    disk-space: "120GB"  # As you like
-    memory: "4096"  # As you like
+        ip: "192.168.33.100" # As you like
+#    host_name: "develop.local" # As you like
+    disk-space: "50GB" # As you like
+    memory: "2048" # As you like
     cpus: "4" # As you like
     gui: false
-    providor: "vmware_fusion" # vmware_fusion or virtualbox
+    providor: "vmware_fusion" # or virtualbox
     system_command:
-        #- "command"
+    #- "command"
     sync:
-      nfs:  # NFS sync As you like
-        - localPath: "../../projects" # As you like
-          vmPath: "/home/vagrant/workspace/projects"
-        - localPath: "../../develop" # this project !imprtant
-          vmPath: "/home/vagrant/workspace/develop"
+      nfs: # As you like 
+        - localPath: "./ansible"
+          vmPath: "/home/vagrant/ansible"
     copyfiles: # As you like
       - localPath: "~/.ssh/id_rsa"
         vmPath: "~/.ssh/id_rsa"
@@ -226,24 +240,71 @@ vm:
         vmPath: "~/.ssh/ansible_rsa"
       - localPath: "~/.ssh/ansible_rsa.pub"
         vmPath: "~/.ssh/ansible_rsa.pub"
-    provision:
-      - 'init.sh'
-    ansible: # Ansible-setting
+    provision_file:
+#      - 'init.sh'
+    provision_command:
+      - "sudo mkdir /vagrant"
+      - "sudo chmod 775 /vagrant"
+    ansible:
       provision: "ansible_local"
       verbose: true
       install: true
       install_mode: "pip"
       version: "2.9.7"
-      playbook: "/home/vagrant/workspace/develop/ansible/develop/site.yml" # << Your Ansible playbook
-      inventory_path: "/home/vagrant/workspace/develop/ansible/develop/hosts/develop" # << Your Ansible inventory file
-      galaxy_roles_path: "/home/vagrant/workspace/develop/ansible/develop/roles" # << Your Ansible roles dir
-      limit: "vagrant_ubuntu18" # hostname see  inventoryfile
-      # tags: ["tag_name"] # when need tags. Relation Vagrantfile
-      # skip_tags: ["tag_name"] # when need tags Relation Vagrantfile
+      playbook: "/home/vagrant/ansible/site.yml"
+      inventory_path: "/home/vagrant/ansible/hosts/develop"
+      galaxy_roles_path: "/home/vagrant/ansible/roles"
+      limit: "vagrant_ubuntu18"
+      # tags: [] # when need tags. Relation Vagrantfile
+      # skip_tags: [] # when need tags Relation Vagrantfile
+  - vm_name: "dev_u20" # As you like
+    box_name: "generic/ubuntu2004"
+    box_version: "3.0.30"
+    private_network:
+      - name: "vm host"
+        ip: "192.168.33.101" # As you like
+    #    host_name: "develop.local" # As you like
+    disk-space: "50GB" # As you like
+    memory: "2048" # As you like
+    cpus: "4" # As you like
+    gui: false
+    providor: "vmware_fusion" # or virtulabox
+    system_command:
+    #- "command"
+    sync:
+      nfs # As you like:
+        - localPath: "./ansible"
+          vmPath: "/home/vagrant/ansible"
+    copyfiles: # As you like
+      - localPath: "~/.ssh/id_rsa"
+        vmPath: "~/.ssh/id_rsa"
+      - localPath: "~/.ssh/id_rsa.pub"
+        vmPath: "~/.ssh/id_rsa.pub"
+      - localPath: "~/.ssh/ansible_rsa"
+        vmPath: "~/.ssh/ansible_rsa"
+      - localPath: "~/.ssh/ansible_rsa.pub"
+        vmPath: "~/.ssh/ansible_rsa.pub"
+    provision_file:
+    #      - 'init.sh'
+    provision_command:
+      - "sudo mkdir /vagrant"
+      - "sudo chmod 775 /vagrant"
+    ansible:
+      provision: "ansible_local"
+      verbose: true
+      install: true
+      install_mode: "pip"
+      version: "2.9.7"
+      playbook: "/home/vagrant/ansible/site.yml"
+      inventory_path: "/home/vagrant/ansible/hosts/develop"
+      galaxy_roles_path: "/home/vagrant/ansible/roles"
+      limit: "vagrant_ubuntu20"
+      # tags: ['example'] # when need tags. Relation Vagrantfile
+      # skip_tags: ['example'] # when need tags Relation Vagrantfile
 ```
 UP
 ```bash
-vagrant up develop
+vagrant up <vm_name>
 ```
 
 ## Roles
