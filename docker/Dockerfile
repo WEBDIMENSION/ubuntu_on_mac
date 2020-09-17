@@ -42,10 +42,10 @@ RUN apt-get install -y \
 RUN mkdir -p /var/run/sshd && chmod 755 /var/run/sshd
 
 
-COPY  /home/vagrant/.ssh/id_rsa /root/.ssh/id_rsa
-COPY  /home/vagrant/.ssh/id_rsa.pub /root/.ssh/id_rsa.pub
-COPY  /home/vagrant/.ssh/ansible_rsa /root/.ssh/ansible_rsa
-COPY  /home/vagrant/.ssh/ansible_rsa.pub /root/.ssh/ansible_rsa.pub
+COPY  .ssh/id_rsa /root/.ssh/id_rsa
+COPY  .ssh/id_rsa.pub /root/.ssh/id_rsa.pub
+COPY  .ssh/ansible_rsa /root/.ssh/ansible_rsa
+COPY  .ssh/ansible_rsa.pub /root/.ssh/ansible_rsa.pub
 #
 #RUN curl -L https://raw.githubusercontent.com/pyenv/pyenv-installer/master/bin/pyenv-installer | bash
 #RUN echo $'\n\
