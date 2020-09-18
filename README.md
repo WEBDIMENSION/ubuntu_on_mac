@@ -21,6 +21,7 @@ vmware fusion 11.5.5
 #### Exec all 
 ```bash
 ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu18
+ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu20
 ```
 #### Tags (specification Tag)
 ```bash

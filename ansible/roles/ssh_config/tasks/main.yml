@@ -1,27 +1,26 @@
 ---
 # tasks file for roles/ssh_config
-# authorized_keys
-#- name: check exists {{ home_path }}/.ssh/authorized_keys
-#  stat:
-#    path: ~/.ssh/authorized_keys
-#    register: check_exists_authorized_keys
+- name: check exists {{ home_path }}/.ssh/authorized_keys
+  stat:
+    path: ~/.ssh/authorized_keys
+  register: check_exists_authorized_keys
+
+- name: debug
+  debug:
+    msg: "{{ check_exists_authorized_keys  }}"
 #
-#- name: Remove {{ home_path }}/.ssh/authorized_keys if exists
-#  file:
-#    path: "{{ home_path }}/.ssh/authorized_keys"
-#      state: absent
-#  when: check_exists_authorized_keys
-#
-#- name: check exists {{ home_path }}/.ssh/authorized_keys
-#  stat:
-#    path: ~/.ssh/authorized_keys
-#    register: check_exists_authorized_keys
-#
-#- name: Create {{ home_path }}/authorized_keys if exists
-#  file:
-#    path: "{{ home_path }}/.ssh/authorized_keys"
-#      state: present
-#  when: not check_exists_authorized_keys
+- name: Remove {{ home_path }}/.ssh/authorized_keys if exists
+  file:
+    path: "{{ home_path }}/.ssh/authorized_keys"
+    state: absent
+  when: check_exists_authorized_keys.stat.exists
+
+- name: Create {{ home_path }}/.ssh/authorized_keys if exists
+  file:
+    path: "{{ home_path }}/.ssh/authorized_keys"
+    state: touch
+    mode: '0600'
+  when: True
 
 - name: cat rsa_pub
   command: |
