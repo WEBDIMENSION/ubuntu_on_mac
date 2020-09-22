@@ -1,0 +1,21 @@
+---
+# tasks file for nvim
+# For ubuntu18
+
+- name: nvim dependencies
+  become: true
+  apt:
+    name: "{{ item }}"
+  with_items: "{{ nvim_dependencies }}"
+
+- name: apt_repository
+  become: true
+  apt_repository:
+    repo: 'ppa:neovim-ppa/stable'
+
+- name: nvim install
+  become: true
+  apt:
+    name: "neovim"
+    state: present
+

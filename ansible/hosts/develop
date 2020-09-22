@@ -1,8 +1,12 @@
 [develop]
+vagrant_centos7  ansible_host=127.0.0.1 ansible_connection=local
 vagrant_ubuntu18 ansible_host=127.0.0.1 ansible_connection=local
-vagrant_centos7 ansible_host=127.0.0.1 ansible_connection=local
-[ubuntu18]
-vagrant_ubuntu18
+vagrant_ubuntu20 ansible_host=127.0.0.1 ansible_connection=local ansible_python_interpreter=/usr/bin/python3
+
 [centos7]
 vagrant_centos7
+[ubuntu18]
+vagrant_ubuntu18
+[ubuntu20]
+vagrant_ubuntu20
 

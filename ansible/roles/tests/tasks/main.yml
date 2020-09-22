@@ -55,7 +55,7 @@
 
 - name: tests | exec testinfra
   command: |
-    bash -lc "py.test -v tests/testinfra.py --connection=local --hosts='ansible://vagrant_ubuntu18' --ansible-inventory='hosts/develop'"
+    bash -lc "py.test -v tests/testinfra.py --connection=local --hosts='ansible://{{ inventory_hostname }}' --ansible-inventory='hosts/develop'"
   args:
     chdir: "{{ deploy_path }}"
   when: True

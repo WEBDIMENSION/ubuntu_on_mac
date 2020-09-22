@@ -1,0 +1,10 @@
+---
+# tasks file for ctags
+# For ubuntu18
+- name: Install dependencies for ctags gtags
+  become: true
+  apt:
+    name: "{{ item }}"
+    #state: absent
+    #purge: yes
+  with_items: "{{ global_dependencies }}"

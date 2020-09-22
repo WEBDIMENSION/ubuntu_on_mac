@@ -9,5 +9,6 @@
 - name: Set hostname
   become: true
   command: bash -lc "hostnamectl set-hostname {{ hostname }}"
+  ignore_errors: yes
   when: check_hostname.stdout != hostname
 

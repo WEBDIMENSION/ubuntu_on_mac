@@ -1,0 +1,10 @@
+---
+# tasks file for roles/pyenv
+## For Ubuntu18
+- name: dependencies install
+  become: true
+  apt:
+    name: "{{ item }}"
+    update_cache: yes
+  with_items: "{{ python_dependencies }}"
+

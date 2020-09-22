@@ -19,6 +19,12 @@
    - ansible_distribution == "Ubuntu"
    - ansible_distribution_major_version == "18"
 
+- include: ubuntu20.yml
+  when:
+    - check_zsh_install is failed
+    - ansible_distribution == "Ubuntu"
+    - ansible_distribution_major_version == "20"
+    -
 - name: zprofile
   command: bash -lc "ln -sf {{ shell_profile }} ~/.zprofile"
   when: check_zsh_install is failed

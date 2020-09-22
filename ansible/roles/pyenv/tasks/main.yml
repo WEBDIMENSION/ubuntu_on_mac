@@ -32,6 +32,12 @@
     - pyenv_exists is failed
     - pyenv_state == "present"
 
+- include: ubuntu20.yml
+  when:
+    - ansible_distribution == "Ubuntu"
+    - ansible_distribution_major_version == "20"
+    - pyenv_exists is failed
+    - pyenv_state == "present"
 # OS branch end
 
 - name: pybyenv git clone

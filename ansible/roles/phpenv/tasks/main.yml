@@ -18,6 +18,12 @@
    - phpenv_exists is failed
    - ansible_distribution == "Ubuntu"
    - ansible_distribution_major_version == "18"
+
+- include: ubuntu20.yml
+  when:
+    - phpenv_exists is failed
+    - ansible_distribution == "Ubuntu"
+    - ansible_distribution_major_version == "20"
 # OS branch ennd
 
 - name: phpenv install when not installed
