@@ -19,6 +19,7 @@ COPY ansible /home/vagrant/ansible
 COPY .ssh/ansible_rsa.pub /home/vagrant/.ssh/ansible_rsa.pub
 RUN cat /home/vagrant/.ssh/ansible_rsa.pub >> /home/vagrant/.ssh/authorized_keys
 RUN  touch /home/vagrant/.bashrc
+
 RUN echo '\n\
 if [ -n "$BASH_VERSION" ]; then\n\
     # include .bashrc if it exists\n\
@@ -35,6 +36,11 @@ if [ -d "$HOME/.local/bin" ] ; then\n\
     PATH="$HOME/.local/bin:$PATH"\n\
 fi\n\
 ' >> /home/vagrant/.profile
+
+RUN echo '\n\
+Host *\n\
+    StrictHostKeyChecking no\n\
+' >> /home/vagrant/.ssh/config
 
 RUN chown -R vagrant.vagrant /home/vagrant
 RUN chmod 700 /home/vagrant/.ssh
