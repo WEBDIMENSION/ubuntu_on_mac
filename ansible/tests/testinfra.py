@@ -40,7 +40,7 @@ def test_installed_pkg(host):
         "pass",
         "zip",
         "docker-ce",
-        "python",
+        # "python",
         "ruby",
         "zsh",
         "glances",
@@ -49,7 +49,7 @@ def test_installed_pkg(host):
         "neovim",
         "pwgen",
         "nmap",
-        "tmux",
+        # "tmux",
         "jq",
     ]
     for i in range(len(installed_pkg)):
@@ -144,6 +144,7 @@ def test_apps(host):
     }
     for key in apps:
         version = host.ansible("command", apps[key]["command"], check=False)["stdout"]
+        print(version)
         assert apps[key]["result"] in version
 
 

@@ -1,0 +1,13 @@
+---
+# tasks file for roles/lazydocker
+# For Ubuntu18
+- name: check installed lazydocker
+  command: bash -lc "lazydocker --version"
+  register: lazydocker_exists
+  changed_when: False
+  ignore_errors: yes
+
+- name: Install lazydocker packages
+  shell: bash -lc "curl https://raw.githubusercontent.com/jesseduffield/lazydocker/master/scripts/install_update_linux.sh | bash"
+  when: lazydocker_exists is failed
+

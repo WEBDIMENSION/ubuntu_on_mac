@@ -1,0 +1,10 @@
+---
+# tasks file for roles/zsh
+# For Ubuntu18
+- name: install zsh
+  become: true
+  apt:
+    name: "{{ item }}"
+  with_items:
+    - zsh
+  when: check_zsh_install is failed

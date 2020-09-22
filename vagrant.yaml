@@ -12,7 +12,7 @@ vm:
   ##################################
   #  Ubuntu Vmware Fusion
   ##################################
-  - vm_name: "dev"
+  - vm_name: "dev_u18"
     box_name: "generic/ubuntu1804"
     box_version: "3.0.12"
     private_network:
@@ -56,3 +56,47 @@ vm:
       limit: "vagrant_ubuntu18"
       # tags: [] # when need tags. Relation Vagrantfile
       # skip_tags: [] # when need tags Relation Vagrantfile
+  - vm_name: "dev_u20"
+    box_name: "generic/ubuntu2004"
+    box_version: "3.0.30"
+    private_network:
+      - name: "vm host"
+        ip: "192.168.33.101"
+    #    host_name: "develop.local"
+    disk-space: "50GB"
+    memory: "2048"
+    cpus: "4"
+    gui: false
+    providor: "vmware_fusion"
+    system_command:
+    #- "command"
+    sync:
+      nfs:
+        - localPath: "./ansible"
+          vmPath: "/home/vagrant/ansible"
+    copyfiles:
+      - localPath: "~/.ssh/id_rsa"
+        vmPath: "~/.ssh/id_rsa"
+      - localPath: "~/.ssh/id_rsa.pub"
+        vmPath: "~/.ssh/id_rsa.pub"
+      - localPath: "~/.ssh/ansible_rsa"
+        vmPath: "~/.ssh/ansible_rsa"
+      - localPath: "~/.ssh/ansible_rsa.pub"
+        vmPath: "~/.ssh/ansible_rsa.pub"
+    provision_file:
+    #      - 'init.sh'
+    provision_command:
+      - "sudo mkdir /vagrant"
+      - "sudo chmod 775 /vagrant"
+    ansible:
+      provision: "ansible_local"
+      verbose: true
+      install: true
+      install_mode: "pip"
+      version: "2.9.7"
+      playbook: "/home/vagrant/ansible/site.yml"
+      inventory_path: "/home/vagrant/ansible/hosts/develop"
+      galaxy_roles_path: "/home/vagrant/ansible/roles"
+      limit: "vagrant_ubuntu20"
+      # tags: ['example'] # when need tags. Relation Vagrantfile
+      # skip_tags: ['example'] # when need tags Relation Vagrantfile

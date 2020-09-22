@@ -19,6 +19,12 @@
    - ansible_distribution == "Ubuntu"
    - ansible_distribution_major_version == "18"
 
+- include: ubuntu20.yml
+  when:
+    - tmux_exists is failed
+    - ansible_distribution == "Ubuntu"
+    - ansible_distribution_major_version == "20"
+
 - name: Remove tmux src
   become: true
   command: bash -lc "rm -rf /usr/local/bin/tmux"
@@ -35,7 +41,7 @@
   become: true
   shell: |
     ./autogen.sh
-    ./configure --prefix=/usr/local
+    ./configure --prefix=/usr
     make
     make install
   args:

@@ -3,7 +3,7 @@
 # common
 hostname: 'develop.local'
 home_path: "{{ ansible_env.HOME }}"
-deploy_path: "{{ home_path }}/ansible"
+deploy_path: "{{ ansible_env.PWD }}"
 login_shell: 'zsh'
 #ansible
 ansible_state: "present"

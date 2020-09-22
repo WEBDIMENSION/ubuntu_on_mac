@@ -1,0 +1,84 @@
+---
+# tasks file for roles/docker
+# For Ubuntu18
+- name: deug
+  debug:
+    msg: "{{ ansible_env.USER }}"
+
+- name: check installed docker
+  command: bash -lc "docker --version"
+  register: docker_exists
+  changed_when: False
+  ignore_errors: yes
+
+- name: Add docker GPG key
+  become: yes
+  apt_key:
+    url: https://download.docker.com/linux/ubuntu/gpg
+  when: docker_exists is failed
+
+- name: Add apt repository
+  become: yes
+  apt_repository:
+    repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+    update_cache: yes
+  when: docker_exists is failed
+
+- name: Install Docker packages
+  become: yes
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_list: "{{ docker_dependencies }}"
+  notify: service_docker_enabled
+  when: docker_exists is failed
+
+- name: Add usansible_env.USERer to docker group
+  become: yes
+  user:
+    name: "{{ ansible_env.USER }}"
+    groups: docker
+    append: yes
+  when: docker_exists is failed
+
+- name: Check exist docker deamon service file
+  become: true
+  stat:
+    path: "/etc/systemd/system/docker.service.d/startup_options.conf"
+  register: exists_docker_deamon
+
+- name: Docker deamon dir
+  become: true
+  file:
+    path: "/etc/systemd/system/docker.service.d"
+    state: "directory"
+  when:
+    - exists_docker_deamon.stat.exists is false
+
+- name: Docker deamon service.conf
+  become: true
+  template:
+    src: templates/startup_options.conf.j2
+    dest: "/etc/systemd/system/docker.service.d/startup_options.conf"
+  when:
+    - exists_docker_deamon.stat.exists is false
+
+- name: Docker demon check
+  become: true
+  shell: |
+    bash -lc "service docker status | grep '0.0.0.0:2376' | wc -l"
+  changed_when: False
+  register: docker_deamon_service
+
+- name: debug
+  debug:
+    msg: "{{ docker_deamon_service.stdout }}"
+
+
+- name: Reload systemd docker
+  become: true
+  shell: |
+    bash -lc "systemctl daemon-reload"
+    bash -lc "systemctl restart docker.service"
+  when:
+    - docker_deamon_service.stdout == "0"

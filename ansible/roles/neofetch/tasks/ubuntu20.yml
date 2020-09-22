@@ -1,0 +1,17 @@
+---
+# tasks file for roles/neofetch
+# For Ubuntu18
+- name: check installed neofetch
+  shell: "neofetch --version | grep Neofetch"
+  register: neofetch_exists
+  changed_when: False
+  ignore_errors: yes
+
+- name: install neofetch
+  become: true
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - neofetch
+  when: neofetch_exists is failed
