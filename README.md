@@ -1,4 +1,10 @@
 # Development environmen for Mac (Ubuntu on mac)
+![tests](https://github.com/WEBDIMENSION/ubuntu_on_mac/workflows/tests/badge.svg)
+![ubuntu](https://img.shields.io/badge/Ubuntu-18.04-green)
+![ubuntu](https://img.shields.io/badge/Ubuntu-20.04-green)
+![](https://img.shields.io/badge/lint-ansible_lint-green)
+![](https://img.shields.io/badge/test-testinfra-green)
+
 
 ## Required apps (必要アプリ)
 - Vagrant
@@ -11,14 +17,14 @@ Mac 10.15.6
 Vagrant 2.2.9
 vmware fusion 11.5.5 
 ```
-## Purpose 
-> Docer for Mac is too late. Create develop (ubuntu18) on mac 
+## Purpose
+> Docer for Mac is too late. Create develop (ubuntu18) on mac
 > Install ether tools
 
-## Exec Ansible 
+## Exec Ansible
 ### Case from host
 
-#### Exec all 
+#### Exec all
 ```bash
 ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu18
 ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu20

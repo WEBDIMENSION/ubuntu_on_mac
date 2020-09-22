@@ -9,19 +9,17 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-18.04, ubuntu-20.04]
-    runs-on: ${{ matrix.os }}
+        docker_image: [ ubuntu18.04, ubuntu20.04 ]
+    runs-on: ubuntu-latest
     env:
       DOCKER_IP: ""
-      IMAGE_TAG: "dev"
-      CONTAINER_TAG: "dev"
       DOCKER_USER: "vagrant"
     steps:
       - uses: actions/checkout@v2
       - name: docker build
         run: |
-          docker build . -t ${{ env.IMAGE_TAG }}
-          docker run -itd --privileged --name ${{ env.CONTAINER_TAG }} ${{ env.IMAGE_TAG }}
+          docker build -f dockerfiles/${{ matrix.docker_image }}/Dockerfile . -t ${{ matrix.docker_image }}
+          docker run -itd --privileged --name ${{ matrix.docker_image }} ${{ matrix.docker_image }}
           sleep 5
 
       - name: Ansible
@@ -30,11 +28,10 @@ jobs:
           chmod 600 .ssh/ansible_rsa
           ssh -o StrictHostKeyChecking=no ${{ env.DOCKER_USER }}@${{ env.DOCKER_IP }} -i .ssh/ansible_rsa "cd  ~/ansible && \
           pip3 install -r requirements.txt && \
-          cat ~/.profile && \
           source ~/.profile && \
           ansible-lint site.yml && \
           black && \
           flake8 tests && \
-          ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu20"
+          ansible-playbook -i hosts/develop site.yml -l ${{ matrix.version }}"
         env:
           DOCKER_IP: $(docker inspect --format "{{ .NetworkSettings.IPAddress }}" ${{ env.CONTAINER_TAG }})

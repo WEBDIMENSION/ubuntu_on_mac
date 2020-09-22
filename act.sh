@@ -2,5 +2,5 @@
 
 docker rm -f dev
 docker rmi  dev
-docker rm -f act-develop-build
+docker rm -f act-tests-build
 act push

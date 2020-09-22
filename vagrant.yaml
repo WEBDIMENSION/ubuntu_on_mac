@@ -53,7 +53,7 @@ vm:
       playbook: "/home/vagrant/ansible/site.yml"
       inventory_path: "/home/vagrant/ansible/hosts/develop"
       galaxy_roles_path: "/home/vagrant/ansible/roles"
-      limit: "vagrant_ubuntu18"
+      limit: "ubuntu18.04"
       # tags: [] # when need tags. Relation Vagrantfile
       # skip_tags: [] # when need tags Relation Vagrantfile
   - vm_name: "dev_u20"
@@ -97,6 +97,6 @@ vm:
       playbook: "/home/vagrant/ansible/site.yml"
       inventory_path: "/home/vagrant/ansible/hosts/develop"
       galaxy_roles_path: "/home/vagrant/ansible/roles"
-      limit: "vagrant_ubuntu20"
+      limit: "ubuntu20.04"
       # tags: ['example'] # when need tags. Relation Vagrantfile
       # skip_tags: ['example'] # when need tags Relation Vagrantfile
