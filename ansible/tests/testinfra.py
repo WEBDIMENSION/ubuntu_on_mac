@@ -74,7 +74,7 @@ def test_file_exist(host):
         "/usr/bin/ctags",
         "/usr/local/bin/gtags",
         "/usr/local/bin/circleci",
-        "/usr/local/bin/vim",
+        # "/usr/local/bin/vim",
         "/usr/local/bin/lazydocker",
     ]
     for path in pathes:
@@ -131,7 +131,7 @@ def test_apps(host):
         "neofetch": {"command": "which neofetch", "result": "/usr/bin/neofetch"},
         "ccze": {"command": "which ccze", "result": "/usr/bin/ccze"},
         "vim8_version": {"command": "vim --version", "result": "VIM - Vi IMproved 8."},
-        "vim8_pass": {"command": "which vim", "result": "/usr/local/bin/vim"},
+        # "vim8_path": {"command": "which vim", "result": "/usr/local/bin/vim"},
         "nvim": {"command": "which nvim", "result": "/usr/bin/nvim"},
         "lazydocker": {
             "command": "which lazydocker",
