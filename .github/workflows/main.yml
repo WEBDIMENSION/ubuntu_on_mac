@@ -1,0 +1,36 @@
+name: develop
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ develop ]
+
+jobs:
+  build:
+    runs-on: ubuntu-1804
+    env:
+      DOCKER_IP: ""
+      IMAGE_TAG: "dev"
+      CONTAINER_TAG: "dev"
+      DOCKER_USER: "vagrant"
+    steps:
+      - uses: actions/checkout@v2
+      - name: docker build
+        run: |
+          docker build . -t ${{ env.IMAGE_TAG }}
+          docker run -itd --privileged --name ${{ env.CONTAINER_TAG }} ${{ env.IMAGE_TAG }}
+          sleep 5
+
+      - name: Ansible
+        run: |
+          echo "ssh :  ${{ env.DOCKER_USER }}@${{ env.DOCKER_IP }}"
+          ssh -o StrictHostKeyChecking=no ${{ env.DOCKER_USER }}@${{ env.DOCKER_IP }} -i .ssh/ansible_rsa "cd  ~/ansible && \
+          pip3 install -r requirements.txt && \
+          cat ~/.profile && \
+          source ~/.profile && \
+          ansible-lint site.yml && \
+          black && \
+          flake8 tests && \
+          ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu20 --tags docker"
+        env:
+          DOCKER_IP: $(docker inspect --format "{{ .NetworkSettings.IPAddress }}" ${{ env.CONTAINER_TAG }})
