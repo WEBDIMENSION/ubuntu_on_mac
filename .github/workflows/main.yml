@@ -32,6 +32,6 @@ jobs:
           ansible-lint site.yml && \
           black && \
           flake8 tests && \
-          ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu20 --tags docker"
+          ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu20"
         env:
           DOCKER_IP: $(docker inspect --format "{{ .NetworkSettings.IPAddress }}" ${{ env.CONTAINER_TAG }})
