@@ -9,7 +9,7 @@ jobs:
   build:
     strategy:
       matrix:
-        docker_image: [ ubuntu18.04]
+        docker_image: [ ubuntu18.04, ubuntu20.04 ]
     runs-on: ubuntu-latest
     env:
       DOCKER_USER: "vagrant"
