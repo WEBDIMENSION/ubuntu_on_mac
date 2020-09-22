@@ -24,6 +24,7 @@ jobs:
       - name: Ansible
         run: |
           echo "ssh :  ${{ env.DOCKER_USER }}@${{ env.DOCKER_IP }}"
+          chmod 600 .ssh/ansible_rsa
           ssh -o StrictHostKeyChecking=no ${{ env.DOCKER_USER }}@${{ env.DOCKER_IP }} -i .ssh/ansible_rsa "cd  ~/ansible && \
           pip3 install -r requirements.txt && \
           cat ~/.profile && \
