@@ -8,8 +8,8 @@ on:
 jobs:
   build:
     strategy:
-    matrix:
-      os: [ubuntu-18.04, ubuntu-20.04]
+      matrix:
+        os: [ubuntu-18.04, ubuntu-20.04]
     runs-on: ${{ matrix.os }}
     env:
       DOCKER_IP: ""
