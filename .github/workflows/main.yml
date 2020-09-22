@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-1804
+    runs-on: ubuntu-latest
     env:
       DOCKER_IP: ""
       IMAGE_TAG: "dev"
