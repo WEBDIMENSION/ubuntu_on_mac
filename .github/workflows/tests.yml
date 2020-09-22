@@ -12,7 +12,6 @@ jobs:
         docker_image: [ ubuntu18.04, ubuntu20.04 ]
     runs-on: ubuntu-latest
     env:
-      DOCKER_IP: ""
       DOCKER_USER: "vagrant"
     steps:
       - uses: actions/checkout@v2
@@ -24,14 +23,13 @@ jobs:
 
       - name: Ansible
         run: |
-          echo "ssh :  ${{ env.DOCKER_USER }}@${{ env.DOCKER_IP }}"
+          container_ip=$(docker inspect --format "{{ .NetworkSettings.IPAddress }}" ${{ matrix.docker_image }})
+          echo "ssh :  ${{ env.DOCKER_USER }}@$container_ip"
           chmod 600 .ssh/ansible_rsa
-          ssh -o StrictHostKeyChecking=no ${{ env.DOCKER_USER }}@${{ env.DOCKER_IP }} -i .ssh/ansible_rsa "cd  ~/ansible && \
+          ssh -o StrictHostKeyChecking=no ${{ env.DOCKER_USER }}@$container_ip -i .ssh/ansible_rsa "cd  ~/ansible && \
           pip3 install -r requirements.txt && \
           source ~/.profile && \
           ansible-lint site.yml && \
           black && \
           flake8 tests && \
-          ansible-playbook -i hosts/develop site.yml -l ${{ matrix.version }}"
-        env:
-          DOCKER_IP: $(docker inspect --format "{{ .NetworkSettings.IPAddress }}" ${{ env.CONTAINER_TAG }})
+          ansible-playbook -i hosts/develop site.yml -l ${{ matrix.docker_image }}"
