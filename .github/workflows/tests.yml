@@ -1,0 +1,35 @@
+name: tests
+on:
+  push:
+    branches: [ develop ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        docker_image: [ ubuntu18.04, ubuntu20.04 ]
+    runs-on: ubuntu-latest
+    env:
+      DOCKER_USER: "vagrant"
+    steps:
+      - uses: actions/checkout@v2
+      - name: docker build
+        run: |
+          docker build -f dockerfiles/${{ matrix.docker_image }}/Dockerfile . -t ${{ matrix.docker_image }}
+          docker run -itd --privileged --name ${{ matrix.docker_image }} ${{ matrix.docker_image }}
+          sleep 5
+
+      - name: Ansible
+        run: |
+          container_ip=$(docker inspect --format "{{ .NetworkSettings.IPAddress }}" ${{ matrix.docker_image }})
+          echo "ssh :  ${{ env.DOCKER_USER }}@$container_ip"
+          chmod 600 .ssh/ansible_rsa
+          ssh -o StrictHostKeyChecking=no ${{ env.DOCKER_USER }}@$container_ip -i .ssh/ansible_rsa "cd  ~/ansible && \
+          pip3 install -r requirements.txt && \
+          source ~/.profile && \
+          ansible-lint site.yml && \
+          black && \
+          flake8 tests && \
+          ansible-playbook -i hosts/develop site.yml -l ${{ matrix.docker_image }}"
