@@ -11,22 +11,23 @@
 - VMware-Fusion or VirtualBox
 - Ubuntu(18.04 or 20.04) Image for VMware-Fusion  or VirtualBox
 - Vagrant plugin for VMware
-## Environment
+## Operating environment
 ```bash
 Mac 10.15.6 
 Vagrant 2.2.9
 vmware fusion 11.5.5 
 ```
 ## Purpose
-> Docer for Mac is too late. Create develop (ubuntu18) on mac
-> Install ether tools
+Docker for Mac is too late. Create develop (ubuntu18) on mac. and Install other tools too.
 
 ## Exec Ansible
 ### Case from host
 
 #### Exec all
 ```bash
+# Ubuntu18.04
 ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu18
+# Ubuntu20.04
 ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu20
 ```
 #### Tags (specification Tag)
@@ -43,11 +44,6 @@ ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu18 --skip-tags tag
 # Ubuntu20.04
 ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu20 --skip-tags tag
 ```
-#### Example
-# Ubuntu18.04
-ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu18 -t ansible
-# Ubuntu20.04
-ansible-playbook -i hosts/develop site.yml -l vagrant_ubuntu20 -t ansible
 
 ### Case Vagrant provisioning
 Vagaratfile
@@ -357,9 +353,9 @@ tree -L
 |-- zip
 `-- zsh
 ```
-## ansible/roles/develop_init is empty and comment out.
+## ansible/roles/develop_init is empty and commented out.
 This role is use for your personal setting.
-Your vimrc, tmux.conf, git clone... more.
+Your vimrc, tmux.conf, git clone... your favorite.
 
 ## License
 MIT
