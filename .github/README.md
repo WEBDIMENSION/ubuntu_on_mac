@@ -1,4 +1,4 @@
-[Japanese](https://github.com/WEBDIMENSION/ubuntu_on_mac/blob/master/README_en.md)
+[Japanese](https://github.com/WEBDIMENSION/ubuntu_on_mac/blob/master/.github/README.md)
 # Migrate your development environment to Ubuntu on Mac
 ![tests](https://github.com/WEBDIMENSION/ubuntu_on_mac/workflows/tests/badge.svg)
 ![ubuntu](https://img.shields.io/badge/Ubuntu-18.04-green)

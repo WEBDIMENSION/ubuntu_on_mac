@@ -1,4 +1,4 @@
-[English](https://github.com/WEBDIMENSION/ubuntu_on_mac/blob/master/README_en.md)
+[English](https://github.com/WEBDIMENSION/ubuntu_on_mac/blob/master/.github/README.md)
 # Mac上での開発環境をUbuntuへ移行 (Ubuntu on Mac)
 
 ![tests](https://github.com/WEBDIMENSION/ubuntu_on_mac/workflows/tests/badge.svg)
