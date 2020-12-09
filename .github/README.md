@@ -6,7 +6,7 @@
 ![](https://img.shields.io/badge/lint-ansible_lint-green)
 ![](https://img.shields.io/badge/test-testinfra-green)
 
-## Overview要
+## Overview
 Building Ubuntu on a Mac with Vagrant + (VirtualBox or VMware fusion).  
 Used Ansible to set up tools for development.
 
@@ -182,7 +182,7 @@ vm:
       # skip_tags: ['example'] # when need tags Relation Vagrantfile
 ```
 
-Vagrant起動
+Vagrant start
 ```bash
 vagrant up <vm_name>
 ```
