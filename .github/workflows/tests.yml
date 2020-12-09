@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         docker_image: [ ubuntu18.04, ubuntu20.04 ]
-    runs-on: ${{ matrix.docker_image }}-latest
+    runs-on: ubuntu-latest
     env:
       DOCKER_USER: "vagrant"
     steps:
