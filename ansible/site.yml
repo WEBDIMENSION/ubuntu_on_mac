@@ -108,6 +108,9 @@
     - role: tree
       tags:
         - tree
+    - role: act
+      tags:
+        - act
     - role: tests
       tags:
         - tests

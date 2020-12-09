@@ -1,0 +1,16 @@
+---
+# tasks file for roles/act
+- name: check installed act
+  command: bash -lc "act --version"
+  register: act_exists
+  changed_when: False
+  ignore_errors: yes
+
+
+- name: Install act
+  become: yes
+  shell: |
+    bash -lc "curl https://raw.githubusercontent.com/nektos/act/master/install.sh | sudo bash"
+  when: act_exists is failed
+
+
