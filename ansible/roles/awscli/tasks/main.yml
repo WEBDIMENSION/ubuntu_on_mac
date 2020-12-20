@@ -1,0 +1,34 @@
+---
+# tasks file for role/awscli
+- name: check installed awscli
+  command: bash -lc "aws --version"
+  register: aws_exists
+  changed_when: False
+  ignore_errors: yes
+
+- name: Download aws
+  get_url:
+    url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+    dest: ./awscliv2.zip
+  when: aws_exists is failed
+
+- name: Unzip aws
+  unarchive:
+    src: ./awscliv2.zip
+    dest: ./
+  when: aws_exists is failed
+
+- name: Install aws
+  become: yes
+  command: |
+    ./aws/install
+  when: aws_exists is failed
+
+- name: CleanUP aws
+  file:
+    state: absent
+    path: "{{ item }}"
+  with_items:
+    -  ./aws
+    -  ./awscliv2.zip
+  when: aws_exists is failed

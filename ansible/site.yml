@@ -111,6 +111,9 @@
     - role: act
       tags:
         - act
+    - role: awscli
+      tags:
+        - awscli
     - role: tests
       tags:
         - tests
