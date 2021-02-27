@@ -114,6 +114,9 @@
     - role: awscli
       tags:
         - awscli
+    - role: mycli
+      tags:
+        - mycli
     - role: tests
       tags:
         - tests

@@ -1,0 +1,11 @@
+---
+# tasks file for roles/mycli
+- name: Check mycli installed
+  command: bash -lc "mycli --version"
+  register: check_mycli_install
+  changed_when: False
+  ignore_errors: yes
+
+- name: install mycli
+  command: bash -lc "pip install mycli"
+  when: check_mycli_install is failed
