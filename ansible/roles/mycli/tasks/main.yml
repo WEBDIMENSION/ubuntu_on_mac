@@ -7,5 +7,9 @@
   ignore_errors: yes
 
 - name: install mycli
-  command: bash -lc "pip install mycli"
-  when: check_mycli_install is failed
+  become: true
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - mycl: check_mycli_install is failed
