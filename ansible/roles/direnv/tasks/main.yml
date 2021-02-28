@@ -1,0 +1,16 @@
+---
+# tasks file for roles/direnv
+- name: Check direnv installed
+  command: bash -lc "direnv --version"
+  register: check_direnv_install
+  changed_when: False
+  ignore_errors: yes
+
+- name: install direnv
+  become: true
+  apt:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - direnv 
+  when: check_direnv_install is failed
