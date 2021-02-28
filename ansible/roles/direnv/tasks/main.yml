@@ -12,5 +12,5 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - direnv 
+    - direnv
   when: check_direnv_install is failed

@@ -12,5 +12,5 @@
     name: "{{ item }}"
     state: present
   with_items:
-    - mycl
+    - mycli
   when: check_mycli_install is failed

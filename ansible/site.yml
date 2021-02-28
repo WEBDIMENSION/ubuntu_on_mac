@@ -117,6 +117,9 @@
     - role: mycli
       tags:
         - mycli
+    - role: direnv
+      tags:
+        - direnv
     - role: tests
       tags:
         - tests
