@@ -1,0 +1,23 @@
+---
+# tasks file for roles/tfenv
+- name: Check tfenv installed
+  command: bash -lc "tfenv --version"
+  register: check_tfenv_install
+  changed_when: False
+  ignore_errors: yes
+
+- name: tfenv git clone
+  git:
+    repo:  https://github.com/tfutils/tfenv.git
+    dest: "~/.tfenv"
+
+- name: Path for trenv
+  blockinfile:
+    dest: "{{ home_path }}/{{ shell_profile }}"
+    create: yes
+    insertafter: '^PATH=\$PATH:\$HOME/bin$'
+    marker: "# {mark} ANSIBLE tfenv"
+    state: "present"
+    block: |
+      export PATH="$HOME/.tfenv/bin:$PATH"
+  when: check_tfenv_install is failed

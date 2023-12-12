@@ -114,6 +114,9 @@
     - role: awscli
       tags:
         - awscli
+    - role: tfenv
+      tags:
+        - tfenv
     - role: mycli
       tags:
         - mycli
